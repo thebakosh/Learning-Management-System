@@ -1,4 +1,4 @@
-package DB;
+package User;
 
 import org.mindrot.jbcrypt.BCrypt;
 import java.sql.*;
@@ -18,7 +18,7 @@ public class UserAuthentication {
         String hashedPassword = hashPassword(password);
 
         if (isUserExist(username)) {
-            System.out.println("Пользователь с таким логином уже существует!");
+            System.out.println("A user with this login already exists!");
             return;
         }
 
@@ -28,7 +28,7 @@ public class UserAuthentication {
                 stmt.setString(1, username);
                 stmt.setString(2, hashedPassword);
                 stmt.executeUpdate();
-                System.out.println("Пользователь успешно зарегистрирован!");
+                System.out.println("User registered successfully!");
             }
         }
     }

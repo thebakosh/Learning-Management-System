@@ -5,32 +5,27 @@ import Courses.*;
 import Decorators.*;
 import Interfaces.*;
 import Teachers.*;
-import java.sql.Connection;
-import java.sql.DriverManager;
+
 import java.sql.SQLException;
 import java.util.Scanner;
-import DB.UserAuthentication;
-import java.sql.SQLException;
+import User.UserAuthentication;
 
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        // Начальное меню
         System.out.println("Welcome to the LMS system!");
         System.out.println("1. Register");
         System.out.println("2. Login");
         System.out.print("Please select an option (1 or 2): ");
 
-        // Переменная для выбора
         int choice = 0;
 
-        // Обработка некорректного ввода
         boolean validInput = false;
         while (!validInput) {
             try {
                 choice = scanner.nextInt();
-                scanner.nextLine(); // consume newline character
+                scanner.nextLine();
                 if (choice == 1 || choice == 2) {
                     validInput = true;
                 } else {
@@ -39,14 +34,13 @@ public class Main {
                 }
             } catch (Exception e) {
                 System.out.println("Invalid input! Please enter a number (1 or 2).");
-                scanner.nextLine(); // consume invalid input
+                scanner.nextLine();
                 System.out.print("Please select an option (1 or 2): ");
             }
         }
 
         try {
             if (choice == 1) {
-                // Регистрация нового пользователя
                 System.out.println("Registering new user...");
                 System.out.print("Enter username: ");
                 String username = scanner.nextLine();
@@ -56,7 +50,6 @@ public class Main {
                 System.out.println("Registration successful!");
 
             } else if (choice == 2) {
-                // Вход
                 System.out.println("Login...");
                 System.out.print("Enter username: ");
                 String username = scanner.nextLine();
@@ -66,7 +59,6 @@ public class Main {
                 if (UserAuthentication.loginUser(username, password)) {
                     System.out.println("Login successful!");
 
-                    // После входа, выбор курса
                     System.out.println("Please select a course to enroll in:");
                     System.out.println("1. Math Course");
                     System.out.println("2. Programming Course");
@@ -76,7 +68,7 @@ public class Main {
                     while (!validCourseInput) {
                         try {
                             courseChoice = scanner.nextInt();
-                            scanner.nextLine(); // consume newline character
+                            scanner.nextLine();
                             if (courseChoice == 1 || courseChoice == 2) {
                                 validCourseInput = true;
                             } else {
@@ -90,7 +82,6 @@ public class Main {
                         }
                     }
 
-                    // В зависимости от выбора, создаем курс
                     if (courseChoice == 1) {
                         System.out.println("You have selected Math Course!");
                         iCourse mathCourse = new MathCourse();
