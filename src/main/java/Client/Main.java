@@ -10,6 +10,8 @@ import java.sql.SQLException;
 import java.util.Scanner;
 import User.UserAuthentication;
 
+import static User.DatabaseHelper.*;
+
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -81,34 +83,56 @@ public class Main {
                             System.out.print("Please select a course (1 or 2): ");
                         }
                     }
-
                     if (courseChoice == 1) {
                         System.out.println("You have selected Math Course!");
+
+                        String[] mathQuestions = {"What is 1 + 2?", "What is 3 + 5?", "What is 9 + 8?"};
+                        String[] mathAnswers = {"3", "8", "17"};
+
                         iCourse mathCourse = new MathCourse();
                         iCertificate mathCertificate = new MathCertificate();
                         iTeacher mathTeacher = new MathTeacher();
                         iCourse mathWithMentor = new MentorSupportDecorator(mathCourse);
                         iCourse mathWithTeacher = new TeacherDecorator(mathWithMentor, mathTeacher);
-                        iCourse mathWithGamification = new GamificationDecorator(mathWithTeacher);
+                        iCourse mathWithGamification = new GamificationDecorator(mathWithTeacher, mathQuestions, mathAnswers);
 
                         StudentPortalFacade studentPortal = new StudentPortalFacade(mathWithGamification, mathCertificate);
                         studentPortal.enrollInCourse();
                         studentPortal.startLearning();
-                        studentPortal.completeCourse();
+                        int score = studentPortal.completeCourse();
+                        int courseId = getCourseIdByName("MathCourse");
+                        int userId = getUserIdByName(username);
+
+                        System.out.println("Your final score in the Math Course is: " + score);
+                        saveTestResult(userId, courseId, score);
 
                     } else if (courseChoice == 2) {
                         System.out.println("You have selected Programming Course!");
+
+                        String[] progQuestions = {
+                                "System.out.println(2); What will be output?",
+                                "What is the value of 3 * 3?",
+                                "What does 'int' mean in Java?"
+                        };
+                        String[] progAnswers = {"2", "9", "integer"};
+
                         iCourse programmingCourse = new ProgrammingCourse();
                         iCertificate programmingCertificate = new ProgrammingCertificate();
                         iTeacher programmingTeacher = new ProgrammingTeacher();
                         iCourse programmingWithMentor = new MentorSupportDecorator(programmingCourse);
                         iCourse programmingWithTeacher = new TeacherDecorator(programmingWithMentor, programmingTeacher);
-                        iCourse programmingWithGamification = new GamificationDecorator(programmingWithTeacher);
+                        iCourse programmingWithGamification = new GamificationDecorator(programmingWithTeacher, progQuestions, progAnswers);
 
                         StudentPortalFacade studentPortal = new StudentPortalFacade(programmingWithGamification, programmingCertificate);
+
+
                         studentPortal.enrollInCourse();
                         studentPortal.startLearning();
-                        studentPortal.completeCourse();
+                        int score = studentPortal.completeCourse();
+                        int courseId = getCourseIdByName("ProgrammingCourse");
+                        int userId = getUserIdByName(username);
+                        System.out.println("Your final score in the Programming Course is: " + score);
+                        saveTestResult(userId, courseId, score);
                     }
 
                 } else {

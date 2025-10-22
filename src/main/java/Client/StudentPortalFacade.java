@@ -17,10 +17,15 @@ public class StudentPortalFacade {
         System.out.println("Starting learning process...");
         course.deliverContent();
     }
-    public void completeCourse() {
+    public int completeCourse() {
         certificate.issueCertificate();
         System.out.println("Completing the course...");
         sendCompletionNotification();
+
+        if (course instanceof ScoredCourse sc) {
+            return sc.getLastScore();
+        }
+        return 0;
     }
     private void sendCompletionNotification() {
         System.out.println("Course completed! Congratulations!");
